@@ -1,0 +1,26 @@
+services:
+  web:
+    image: node:20-alpine
+    container_name: zeptolab-app
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+    # depends_on:
+    #   - db
+
+  ## Future work use mongo db
+  # db:
+  #   image: mongo
+  #   container_name: zeptolab-db
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+
+# volumes:
+#   mongo-data:
