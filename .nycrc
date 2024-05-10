@@ -1,0 +1,21 @@
+{
+    "all": true,
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "reporter": [
+        "text",
+        "text-summary"
+    ],
+    "report-dir": "coverage",
+    "exclude": [
+        "spec/**",
+        "build.ts",
+        "src/index.ts",
+        "src/pre-start.ts",
+        "src/server.ts"
+    ],
+    "include": [
+        "**/*.ts"
+    ]
+}
+
+

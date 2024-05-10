@@ -7,12 +7,13 @@ const BATCH_SIZE = 512 * 1024; // 512KB
 
 
 async function persists(file: IFile): Promise<boolean> {
-  const db = await orm.openFileDb();
-  db.files[file.hash] = file;
   try {
-    orm.saveFileDb(db);
+    const db = await orm.openFileDb();
+    db.files[file.hash] = file;
+    await orm.saveFileDb(db);
     return true;
   } catch (err) {
+    logger.err(`Error saving file ${file.hash}: ${err.message}`);
     return false;
   }
 }
@@ -31,31 +32,17 @@ async function readFile(filePath: string): Promise<string> {
   if (!await existsFileInFileSystem(filePath)) {
     throw new Error(`File can't be read: ${filePath}`);
   }
-  return new Promise((resolve, reject) => {
-    const readStream = createReadStream(filePath, { encoding: 'utf8' });
-    let fileContent = '';
-
-    readStream.on('data', (chunk) => {
+  const readStream = createReadStream(filePath, { encoding: 'utf8' , highWaterMark: BATCH_SIZE});
+  let fileContent = '';
+  try {
+    for await (const chunk of readStream) {
       fileContent += String(chunk);
-      if (fileContent.length >= BATCH_SIZE) {
-        readStream.pause();
-        const content = fileContent;
-        fileContent = '';
-        resolve(content);
-      }
-    });
-
-    readStream.on('end', () => {
-      if (fileContent.length > 0) {
-        resolve(fileContent);
-      }
-    });
-
-    readStream.on('error', (error) => {
-      logger.err(`Error reading file ${filePath}: ${error.message}`);
-      reject(error);
-    });
-  });
+    }
+  } catch (err) {
+    logger.err(`Error reading file ${filePath}: ${err.message}`);
+    throw err;
+  }
+  return fileContent;
 }
 
 export default {
