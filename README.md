@@ -1,19 +1,26 @@
 ## Requirements
 
-- Node.js 10.x or higher
+- Node.js 20.x or higher (recommended to use nvm)
+- Docker with docker compose (either plugin or docker-compose)
 
 ## Features
-- [X] Read file
-- [X] Parse file
+- [X] Validate request
+- [X] Validate response
 - [X] Store file in local database
+- [X] Environment deployment by configuration
 
 ## Quality features
+- [X] Swagger API documentation
 - [X] Unit tests
 - [X] Linting
 - [X] Code coverage
 - [X] Code style
-- [X] Documentation
+- [X] README file
 - [X] Read files in batches
+
+
+## Future features
+- [ ] Replace database with MongoDB
 
 ## Available Scripts
 
@@ -30,7 +37,7 @@ Run the server in development mode.
 
 Run all unit-tests with hot-reloading.
 
-### `npm test -- --testFile="name of test file" (i.e. --testFile=Users).`
+### `npm test -- --testFile="name of test file" (i.e. --testFile=Files).`
 
 Run a single unit-test.
 

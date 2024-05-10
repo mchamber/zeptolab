@@ -19,7 +19,10 @@
     "max-len": [
       "warn",
       {
-        "code": 80
+        "code": 80,
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
       }
     ],
     "comma-dangle": ["warn", "always-multiline"],
